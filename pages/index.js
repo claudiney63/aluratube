@@ -1,18 +1,23 @@
 import config from '../config.json'
 import styled from 'styled-components'
-import StyledMenu from '../src/components/StyledMenu'
+import StyledMenu from '../src/components/Menu/StyledMenu'
 import { StyledTimeline } from '../src/components/StyledTimeline'
 import { CSSReset } from '../src/components/CSSReset'
+import { useState } from 'react'
 
 function HomePage() {
 
-    // const estiloHomePage = { background: 'red' }
+    const [valorDoFiltro, setvalorDoFiltro] = useState("")
 
     return (
-        <div>
-            <StyledMenu />
+        <div style={{
+            display: "flex",
+            flexDirection: "column",
+            flex: 1,
+        }}>
+            <StyledMenu valorDoFiltro={valorDoFiltro} setvalorDoFiltro={setvalorDoFiltro} />
             <Header />
-            <TimeLine playlists={config.playlists} />
+            <TimeLine searchValue={valorDoFiltro} playlists={config.playlists} />
         </div>
     )
 }
@@ -22,12 +27,18 @@ export default HomePage
 
 function Header() {
 
+    const StyledBanner = styled.div`
+        background-color: blue;
+        height: 230px;
+        background-image: url(${({ banner }) => banner});
+        /* background-image: url(${config.banner}) */
+    `
+
     const StyledHeader = styled.div`
         img {
             width: 80px;
             height: 80px;
             border-radius: 50%;
-            margin-top: 50px;
         }
         .user-info {
             display: flex;
@@ -40,7 +51,7 @@ function Header() {
 
     return (
         <StyledHeader>
-            {/* <img src="banner" /> */}
+            <StyledBanner banner={config.banner} />
             <section className='user-info'>
                 <img src={`https://github.com/${config.github}.png`} />
                 <h2>{config.nome}</h2>
@@ -60,13 +71,18 @@ function TimeLine(props) {
                 (playListName) => {
                     const videos = props.playlists[playListName]
                     return (
-                        <section>
+                        <section key={playListName}>
                             <h2>{playListName}</h2>
                             <div>
                                 {
-                                    videos.map((video) => {
+                                    videos.filter(
+                                        (video) => {
+                                            const titleNormalize = video.title.toLowerCase() //colocar todas as letras minusculas
+                                            return titleNormalize.includes(props.searchValue) //retorna so os videos que possui no titulo as letras especificas
+                                        }
+                                    ).map((video) => {
                                         return (
-                                            <a href={video.url}>
+                                            <a key={video.url} href={video.url}>
                                                 <img src={video.thumb}></img>
                                                 <span>{video.title}</span>
                                             </a>
