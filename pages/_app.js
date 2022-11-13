@@ -2,6 +2,7 @@ import { useContext } from 'react';
 import { ThemeProvider } from 'styled-components'
 import { CSSReset } from '../src/components/CSSReset'
 import ColorModeProvider, { ColorModeContext } from '../src/components/Menu/components/ColorModeProvider';
+import RegisterVideo from '../src/components/RegisterVideo/RegisterVideo';
 
 //ThemeProvider -> prover o tema para o app todo
 //ColorModeProvider -> Prove o state de light ou dark para todo mundo
@@ -40,6 +41,7 @@ function MyApp({ Component, pageProps }) {
         <ThemeProvider theme={themeActive[Contexto.mode]}>
             <CSSReset />
             <Component {...pageProps}></Component>
+            <RegisterVideo/>
         </ThemeProvider>
     )
 }
