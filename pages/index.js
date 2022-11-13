@@ -50,6 +50,7 @@ function Header() {
             padding: 16px 32px;
             gap: 16px;
         }
+
     `;
 
     return (
@@ -57,8 +58,10 @@ function Header() {
             <StyledBanner banner={config.banner} />
             <section className='user-info'>
                 <img src={`https://github.com/${config.github}.png`} />
+                <div>
                 <h2>{config.nome}</h2>
                 <p>{config.job}</p>
+                </div>
             </section>
         </StyledHeader>
     )
