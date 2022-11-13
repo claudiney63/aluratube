@@ -2,7 +2,6 @@ import config from '../config.json'
 import styled from 'styled-components'
 import StyledMenu from '../src/components/Menu/StyledMenu'
 import { StyledTimeline } from '../src/components/StyledTimeline'
-import { CSSReset } from '../src/components/CSSReset'
 import { useState } from 'react'
 
 function HomePage() {
@@ -10,15 +9,17 @@ function HomePage() {
     const [valorDoFiltro, setvalorDoFiltro] = useState("")
 
     return (
-        <div style={{
-            display: "flex",
-            flexDirection: "column",
-            flex: 1,
-        }}>
-            <StyledMenu valorDoFiltro={valorDoFiltro} setvalorDoFiltro={setvalorDoFiltro} />
-            <Header />
-            <TimeLine searchValue={valorDoFiltro} playlists={config.playlists} />
-        </div>
+        <>
+            <div style={{
+                display: "flex",
+                flexDirection: "column",
+                flex: 1,
+            }}>
+                <StyledMenu valorDoFiltro={valorDoFiltro} setvalorDoFiltro={setvalorDoFiltro} />
+                <Header />
+                <TimeLine searchValue={valorDoFiltro} playlists={config.playlists} />
+            </div>
+        </>
     )
 }
 
@@ -28,13 +29,15 @@ export default HomePage
 function Header() {
 
     const StyledBanner = styled.div`
-        background-color: blue;
         height: 230px;
         background-image: url(${({ banner }) => banner});
         /* background-image: url(${config.banner}) */
     `
 
     const StyledHeader = styled.div`
+
+        background-color: ${({ theme }) => theme.backgroundLevel1};
+
         img {
             width: 80px;
             height: 80px;

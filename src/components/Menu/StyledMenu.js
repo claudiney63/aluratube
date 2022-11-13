@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import DarkModeSwitch from "./components/DarkModeSwitch";
 import Search from "./components/Search";
 
 const StyledMenu = styled.header`
@@ -15,7 +16,7 @@ const StyledMenu = styled.header`
   width: 100%;
   .logo {
     width: 100%;
-    max-width: 80px;
+    max-width: 80px; 
     @media (min-width: 600px) {
       max-width: 127px;
     }
@@ -32,6 +33,7 @@ export default function Menu(props) {
         <Logo />
       </div>
       <Search valorDoFiltro={props.valorDoFiltro} setvalorDoFiltro={props.setvalorDoFiltro}></Search>
+      <DarkModeSwitch/>
     </StyledMenu>
   );
 }
