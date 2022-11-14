@@ -2,11 +2,28 @@ import config from '../config.json'
 import styled from 'styled-components'
 import StyledMenu from '../src/components/Menu/StyledMenu'
 import { StyledTimeline } from '../src/components/StyledTimeline'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import videoService from '../src/Services/videoService'
 
 function HomePage() {
 
+    const service = videoService()
+
     const [valorDoFiltro, setvalorDoFiltro] = useState("")
+
+    const [playlists, setPlaylists] = useState({})
+
+    useEffect(() => {
+        service.getAllvideos().then((dados) => {
+            console.log(dados.data)
+            const novaPlaylist = { ...playlists }
+            dados.data.map((video) => {
+                if (!novaPlaylist[video.playlist]) novaPlaylist[video.playlist] = []
+                novaPlaylist[video.playlist]?.push(video)
+            })
+            setPlaylists(novaPlaylist)
+        })
+    }, [])
 
     return (
         <>
@@ -17,7 +34,7 @@ function HomePage() {
             }}>
                 <StyledMenu valorDoFiltro={valorDoFiltro} setvalorDoFiltro={setvalorDoFiltro} />
                 <Header />
-                <TimeLine searchValue={valorDoFiltro} playlists={config.playlists} />
+                <TimeLine searchValue={valorDoFiltro} playlists={playlists} />
             </div>
         </>
     )
@@ -59,8 +76,8 @@ function Header() {
             <section className='user-info'>
                 <img src={`https://github.com/${config.github}.png`} />
                 <div>
-                <h2>{config.nome}</h2>
-                <p>{config.job}</p>
+                    <h2>{config.nome}</h2>
+                    <p>{config.job}</p>
                 </div>
             </section>
         </StyledHeader>

@@ -1,3 +1,4 @@
+import { createClient } from "@supabase/supabase-js";
 import { useState } from "react";
 import { StyledRegisterVideo } from "./StyledRegisterVideo";
 
@@ -17,6 +18,14 @@ const useForm = (props) => { //hook custom
             setValuesInput({})
         }
     }
+}
+
+const PROJECT_URL = 'https://osdsuglajugvvreoqwpi.supabase.co'
+const KEY_API = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9zZHN1Z2xhanVndnZyZW9xd3BpIiwicm9sZSI6ImFub24iLCJpYXQiOjE2NjgzODM5OTUsImV4cCI6MTk4Mzk1OTk5NX0._-oyqm-LturvKCYlum0k_x69QSKjapg1GzbjnBoUP_g'
+const supabase = createClient(PROJECT_URL, KEY_API)
+
+const getThumbnail = (url) => {
+    return `https://img.youtube.com/vi/${url.split('v=')[1]}/hqdefault.jpg`
 }
 
 export default function RegisterVideo() {
@@ -39,6 +48,20 @@ export default function RegisterVideo() {
                     ? (<form onSubmit={(e) => {
                         e.preventDefault()
                         // console.log(formCadastro.valuesInput)
+
+                        supabase.from('videos').insert({
+                            title: formCadastro.valuesInput.titulo,
+                            url: formCadastro.valuesInput.url,
+                            thumb: getThumbnail(formCadastro.valuesInput.url),
+                            playlist: 'jogos'
+                        })
+                        .then((response) => {
+                            console.log(response)
+                        })
+                        .catch((error) => {
+                            console.log(error)
+                        })
+
                         setFormVisibel(!formVisibel)
                         formCadastro.clearForm()
                     }}>
